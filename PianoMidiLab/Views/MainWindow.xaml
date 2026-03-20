@@ -4,27 +4,49 @@
     xmlns:vm="clr-namespace:PianoMidiLab.VMs"
     Title="PianoMidiLab 1.0.0"
     FontSize="14"
-    AllowDrop="True"
     UseLayoutRounding="True"
     ResizeMode="CanMinimize"
     SizeToContent="WidthAndHeight">
     <Window.DataContext>
         <vm:MainVM/>
     </Window.DataContext>
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Background"
-                Value="#EAEAEA"/>
-        </Style>
-        <Style TargetType="TabItem">
-            <Setter Property="Padding"
-                Value="12,4"/>
-        </Style>
-    </Window.Resources>
     <TabControl Padding="0">
         <TabItem Header="文件">
             <Grid Height="240"
-                Width="480"/>
+                Width="420">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="52"/>
+                </Grid.RowDefinitions>
+                <ListBox AllowDrop="True"
+                    ToolTip="支持拖放"
+                    ItemsSource="{Binding Paths}"
+                    SelectedItem="{Binding SelPath}"
+                    Drop="DropMidiPaths"/>
+                <Grid Row="1"
+                    Margin="12,11">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="添加"
+                        Command="{Binding AddPathsCommand}"/>
+                    <Button Grid.Column="2"
+                        Content="移除"
+                        Command="{Binding RemovePathCommand}"/>
+                    <Button Grid.Column="4"
+                        Content="启动"
+                        Command="{Binding RunCommand}"/>
+                    <Button Grid.Column="6"
+                        Content="打断"
+                        Command="{Binding RunCancelCommand}"/>
+                </Grid>
+            </Grid>
         </TabItem>
     </TabControl>
 </Window>
