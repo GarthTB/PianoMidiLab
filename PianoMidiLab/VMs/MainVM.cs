@@ -3,6 +3,7 @@ namespace PianoMidiLab.VMs;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FXTabVMs;
 using Microsoft.Win32;
 using Models;
 using static System.Windows.MessageBox;
@@ -10,6 +11,8 @@ using static System.Windows.MessageBoxButton;
 using static System.Windows.MessageBoxImage;
 
 internal sealed partial class MainVM: ObservableObject {
+    public CleaningTabVM CleaningTabVM { get; } = new();
+
     #region 文件
 
     public ObservableCollection<string> Paths { get; } = [];
@@ -49,7 +52,13 @@ internal sealed partial class MainVM: ObservableObject {
         Idle = false;
         try {
             while (Paths is [var path, ..]) {
-                await Task.Run(() => new Midi(path).Save(), ct);
+                await Task.Run(
+                    () => {
+                        Midi midi = new(path);
+                        CleaningTabVM.Apply(midi);
+                        midi.Save();
+                    },
+                    ct);
                 Paths.RemoveAt(0);
             }
             Show("全部处理完成", "成功", OK, Information);
