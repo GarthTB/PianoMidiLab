@@ -14,6 +14,8 @@ internal sealed class Track {
         byte status = 0;
         var noteOns = (stackalloc (uint Tick, byte Vel)[2048]);
         noteOns.Clear(); // 初始化为默认值
+        var pedalVals = (stackalloc byte[2048]);
+        pedalVals.Clear();
         for (var pos = 0; pos < data.Length;) {
             tick += ReadVLQ(data, ref pos);
 
@@ -29,9 +31,11 @@ internal sealed class Track {
                 noteOn = hi == NoteOn && vel > 0
                     ? (tick, vel)
                     : default;
-            } else if (hi == CC && data[pos] is Sustain or Sostenuto or Soft or Hold2)
-                _pedals.Add(new(tick, data[pos++], data[pos++], lo));
-            else { // 包括非踏板CC
+            } else if (hi == CC && data[pos] is Sustain or Sostenuto or Soft or Hold2) {
+                byte ccNum = data[pos++], val = data[pos++];
+                ref var pedalVal = ref pedalVals[ccNum * 16 + lo];
+                if (pedalVal != val) _pedals.Add(new(tick, ccNum, pedalVal = val, lo)); // 丢弃同值CC
+            } else { // 包括非踏板CC
                 byte d1 = 0, d2 = 0;
                 int len = DataLen(status);
                 if (len is 1 or 2 || status == Meta) d1 = data[pos++];

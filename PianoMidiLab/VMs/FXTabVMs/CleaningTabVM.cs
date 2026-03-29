@@ -15,59 +15,54 @@ internal sealed partial class CleaningTabVM: ObservableObject {
     public uint LongLim {
         get;
         set {
-            var newVal = Clamp(value, 2, 268435454);
-            if (SetProperty(ref field, newVal) && ShortLim > newVal) ShortLim = newVal;
+            var newVal = Clamp(value, 2, uint.MaxValue - 1);
+            if (SetProperty(ref field, newVal) && ShortLim > field) ShortLim = field;
         }
-    } = 268435454;
+    } = uint.MaxValue - 1;
 
     public uint ShortLim {
         get;
         set {
-            var newVal = Clamp(value, 2, 268435454);
-            if (SetProperty(ref field, newVal) && LongLim < newVal) LongLim = newVal;
+            var newVal = Clamp(value, 2, uint.MaxValue - 1);
+            if (SetProperty(ref field, newVal) && LongLim < field) LongLim = field;
         }
     } = 2;
 
     public uint HighLim {
         get;
         set {
-            var newVal = Clamp(value, 1, 126);
-            if (SetProperty(ref field, newVal) && LowLim > newVal) LowLim = newVal;
+            if (SetProperty(ref field, Clamp(value, 1, 126)) && LowLim > field) LowLim = field;
         }
     } = 108;
 
     public uint LowLim {
         get;
         set {
-            var newVal = Clamp(value, 1, 126);
-            if (SetProperty(ref field, newVal) && HighLim < newVal) HighLim = newVal;
+            if (SetProperty(ref field, Clamp(value, 1, 126)) && HighLim < field) HighLim = field;
         }
     } = 21;
 
     public uint ForteLim {
         get;
         set {
-            var newVal = Clamp(value, 2, 126);
-            if (SetProperty(ref field, newVal) && PianoLim > newVal) PianoLim = newVal;
+            if (SetProperty(ref field, Clamp(value, 2, 126)) && PianoLim > field) PianoLim = field;
         }
     } = 126;
 
     public uint PianoLim {
         get;
         set {
-            var newVal = Clamp(value, 2, 126);
-            if (SetProperty(ref field, newVal) && ForteLim < newVal) ForteLim = newVal;
+            if (SetProperty(ref field, Clamp(value, 2, 126)) && ForteLim < field) ForteLim = field;
         }
     } = 2;
 
     public void Apply(Midi midi) {
         if (RemLong || RemShort || RemHigh || RemLow || RemForte || RemPiano)
-            midi.RemoveNotes(n =>
-                (RemLong && n.Dur > LongLim)
-             || (RemShort && n.Dur < ShortLim)
-             || (RemHigh && n.Pitch > HighLim)
-             || (RemLow && n.Pitch < LowLim)
-             || (RemForte && n.OnVel > ForteLim)
-             || (RemPiano && n.OnVel < PianoLim));
+            midi.RemNotes(n => (RemLong && n.Dur > LongLim)
+                            || (RemShort && n.Dur < ShortLim)
+                            || (RemHigh && n.Pitch > HighLim)
+                            || (RemLow && n.Pitch < LowLim)
+                            || (RemForte && n.OnVel > ForteLim)
+                            || (RemPiano && n.OnVel < PianoLim));
     }
 }

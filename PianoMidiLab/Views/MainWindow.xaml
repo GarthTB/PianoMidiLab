@@ -49,7 +49,8 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="清理">
+        <TabItem Header="清理"
+            IsEnabled="{Binding Idle}">
             <tabs:CleaningTab DataContext="{Binding CleaningTabVM}"/>
         </TabItem>
     </TabControl>
