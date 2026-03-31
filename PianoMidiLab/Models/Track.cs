@@ -6,8 +6,8 @@ using static Pedal;
 
 internal sealed class Track {
     private readonly List<Event> _misc = new(128); // 只读透传事件
-    private readonly HashSet<Note> _notes = new(2048); // 丢弃重复音符
-    private readonly HashSet<Pedal> _pedals = new(2048); // 丢弃重复踏板
+    private readonly List<Note> _notes = new(2048);
+    private readonly List<Pedal> _pedals = new(2048);
 
     public Track(ReadOnlySpan<byte> data) {
         var tick = 0u;
@@ -51,7 +51,7 @@ internal sealed class Track {
         }
     }
 
-    public int RemoveNotes(Predicate<Note> match) => _notes.RemoveWhere(match);
+    public void RemNotes(Predicate<Note> match) => _notes.RemoveAll(match);
 
     public byte[] ToBytes() {
         List<Event> events = new(_notes.Count * 2 + _pedals.Count + _misc.Count);

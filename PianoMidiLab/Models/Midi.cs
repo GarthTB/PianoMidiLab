@@ -37,7 +37,7 @@ internal sealed class Midi {
         }
     }
 
-    public int RemoveNotes(Predicate<Note> match) => _tracks.Sum(t => t.RemoveNotes(match));
+    public void RemNotes(Predicate<Note> match) => _tracks.ForEach(t => t.RemNotes(match));
 
     public void Save() {
         var dir = GetDirectoryName(_path) ?? ".";
