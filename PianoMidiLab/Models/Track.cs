@@ -51,15 +51,23 @@ internal sealed class Track {
         }
     }
 
+    public void MapNoteOnVel(Func<byte, byte, byte> f) {
+        for (var i = 0; i < _notes.Count; i++) {
+            var n = _notes[i];
+            var v = f(n.OnVel, n.Pitch);
+            _notes[i] = n with { OnVel = Math.Clamp(v, (byte)1, (byte)127) };
+        }
+    }
+
     public void RemNotes(Predicate<Note> match) => _notes.RemoveAll(match);
 
     public byte[] ToBytes() {
         List<Event> events = new(_notes.Count * 2 + _pedals.Count + _misc.Count);
-        foreach (var note in _notes) {
-            events.Add(note.NoteOn);
-            events.Add(note.EndEvent);
+        foreach (var n in _notes) {
+            events.Add(n.NoteOn);
+            events.Add(n.EndEvent);
         }
-        events.AddRange(_pedals.Select(static pedal => pedal.CC));
+        events.AddRange(_pedals.Select(static p => p.CC));
         events.AddRange(_misc);
         events.Sort();
 
@@ -92,10 +100,10 @@ internal sealed class Track {
         return v;
     }
 
-    private static void WriteVLQ(Stream stream, uint v) {
+    private static void WriteVLQ(MemoryStream ms, uint v) {
         var b = (stackalloc byte[5]);
         var i = 4;
         for (b[4] = (byte)(v & 0x7F); (v >>= 7) > 0; b[--i] = (byte)(v | 0x80)) ;
-        stream.Write(b[i..]);
+        ms.Write(b[i..]);
     }
 }

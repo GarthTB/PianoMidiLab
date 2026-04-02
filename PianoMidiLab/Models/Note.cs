@@ -3,7 +3,6 @@ namespace PianoMidiLab.Models;
 internal readonly record struct Note(
     uint Start,
     uint Dur,
-    uint MaxDur, // 下一个同音的距离
     byte Pitch,
     byte OnVel,
     byte OffVel,

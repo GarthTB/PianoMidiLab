@@ -37,16 +37,17 @@ internal sealed class Midi {
         }
     }
 
+    public void MapNoteOnVel(Func<byte, byte, byte> f) => _tracks.ForEach(t => t.MapNoteOnVel(f));
     public void RemNotes(Predicate<Note> match) => _tracks.ForEach(t => t.RemNotes(match));
 
     public void Save() {
         var dir = GetDirectoryName(_path) ?? ".";
         var name = GetFileNameWithoutExtension(_path);
         var ext = GetExtension(_path);
-        var outPath = Combine(dir, $"{name}_PML{ext}");
-        for (var i = 2; File.Exists(outPath); i++) outPath = Combine(dir, $"{name}_PML_{i}{ext}");
+        var oPath = Combine(dir, $"{name}_PML{ext}");
+        for (var i = 2; File.Exists(oPath); i++) oPath = Combine(dir, $"{name}_PML_{i}{ext}");
 
-        using var fs = File.Create(outPath);
+        using var fs = File.Create(oPath);
 
         var fHeader = (stackalloc byte[14]);
         "MThd"u8.CopyTo(fHeader);
