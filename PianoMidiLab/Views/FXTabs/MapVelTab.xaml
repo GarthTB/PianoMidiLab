@@ -1,0 +1,66 @@
+<UserControl x:Class="PianoMidiLab.Views.FXTabs.MapVelTab"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:PianoMidiLab.VMs.FXTabVMs"
+    d:DataContext="{d:DesignInstance vm:MapVelTabVM}"
+    mc:Ignorable="d"
+    FontSize="14"
+    UseLayoutRounding="True">
+    <Grid Margin="12,11"
+        Width="288">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="29"/>
+            <RowDefinition Height="11"/>
+            <RowDefinition Height="29"/>
+            <RowDefinition Height="11"/>
+            <RowDefinition Height="180"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <CheckBox Padding="8,0"
+                Content="启用"
+                IsChecked="{Binding Enabled}"/>
+            <Button Grid.Column="1"
+                Content="添加锚点"
+                Command="{Binding AddAnchorCommand}"/>
+            <Button Grid.Column="3"
+                Content="删除锚点"
+                Command="{Binding RemAnchorCommand}"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="144"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="力度 1 和 127 映射到"/>
+            <TextBox Grid.Column="1"
+                ToolTip="输入力度1的输出力度"
+                Text="{Binding Vel1To, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Column="3"
+                ToolTip="输入力度127的输出力度"
+                Text="{Binding Vel127To, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+        <DataGrid Grid.Row="4"
+            ToolTip="线性插值"
+            ItemsSource="{Binding Anchors}"
+            SelectedItem="{Binding SelAnchor}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*"
+                    Header="输入力度"
+                    Binding="{Binding VelIn, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Width="*"
+                    Header="输出力度"
+                    Binding="{Binding VelOut, UpdateSourceTrigger=PropertyChanged}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

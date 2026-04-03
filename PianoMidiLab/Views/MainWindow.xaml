@@ -39,7 +39,7 @@
                         Command="{Binding AddPathsCommand}"/>
                     <Button Grid.Column="2"
                         Content="移除"
-                        Command="{Binding RemovePathCommand}"/>
+                        Command="{Binding RemPathCommand}"/>
                     <Button Grid.Column="4"
                         Content="启动"
                         Command="{Binding RunCommand}"/>
@@ -52,6 +52,10 @@
         <TabItem Header="清理"
             IsEnabled="{Binding Idle}">
             <tabs:CleaningTab DataContext="{Binding CleaningTabVM}"/>
+        </TabItem>
+        <TabItem Header="力度映射"
+            IsEnabled="{Binding Idle}">
+            <tabs:MapVelTab DataContext="{Binding MapVelTabVM}"/>
         </TabItem>
     </TabControl>
 </Window>

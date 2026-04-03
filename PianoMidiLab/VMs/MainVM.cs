@@ -12,16 +12,16 @@ using static System.Windows.MessageBoxImage;
 
 internal sealed partial class MainVM: ObservableObject {
     public CleaningTabVM CleaningTabVM { get; } = new();
+    public MapVelTabVM MapVelTabVM { get; } = new();
 
     #region 文件
 
     public ObservableCollection<string> Paths { get; } = [];
-
-    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(RemovePathCommand))]
-    public partial string? SelPath { get; set; }
-
     private bool HasPath => Paths.Count > 0;
     private bool PathSelected => SelPath is {};
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(RemPathCommand))]
+    public partial string? SelPath { get; set; }
 
     public void AddPaths(IEnumerable<string> paths) {
         foreach (var p in paths.Where(p => !Paths.Contains(p))) Paths.Add(p);
@@ -36,7 +36,7 @@ internal sealed partial class MainVM: ObservableObject {
     }
 
     [RelayCommand(CanExecute = nameof(PathSelected))]
-    private void RemovePath() {
+    private void RemPath() {
         Paths.Remove(SelPath!);
         RunCommand.NotifyCanExecuteChanged();
     }
@@ -49,18 +49,16 @@ internal sealed partial class MainVM: ObservableObject {
 
     [RelayCommand(CanExecute = nameof(HasPath), IncludeCancelCommand = true)]
     private async Task RunAsync(CancellationToken ct) {
-        Idle = false;
         try {
-            while (Paths is [var path, ..]) {
+            for (Idle = false; Paths is [var path, ..]; Paths.RemoveAt(0))
                 await Task.Run(
                     () => {
                         Midi midi = new(path);
                         CleaningTabVM.Apply(midi);
+                        MapVelTabVM.Apply(midi);
                         midi.Save();
                     },
                     ct);
-                Paths.RemoveAt(0);
-            }
             Show("全部处理完成", "成功", OK, Information);
         } catch (OperationCanceledException) {} catch (Exception ex) {
             Show($"批处理时：\n{ex}", "异常", OK, Error);

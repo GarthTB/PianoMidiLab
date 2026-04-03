@@ -15,41 +15,41 @@ internal sealed partial class CleaningTabVM: ObservableObject {
     public uint LongLim {
         get;
         set {
-            var newVal = Clamp(value, 2, uint.MaxValue - 1);
-            if (SetProperty(ref field, newVal) && ShortLim > field) ShortLim = field;
+            var v = Clamp(value, 2, uint.MaxValue - 1);
+            if (SetProperty(ref field, v) && ShortLim > field) ShortLim = field;
         }
     } = uint.MaxValue - 1;
 
     public uint ShortLim {
         get;
         set {
-            var newVal = Clamp(value, 2, uint.MaxValue - 1);
-            if (SetProperty(ref field, newVal) && LongLim < field) LongLim = field;
+            var v = Clamp(value, 2, uint.MaxValue - 1);
+            if (SetProperty(ref field, v) && LongLim < field) LongLim = field;
         }
     } = 2;
 
-    public uint HighLim {
+    public int HighLim {
         get;
         set {
             if (SetProperty(ref field, Clamp(value, 1, 126)) && LowLim > field) LowLim = field;
         }
     } = 108;
 
-    public uint LowLim {
+    public int LowLim {
         get;
         set {
             if (SetProperty(ref field, Clamp(value, 1, 126)) && HighLim < field) HighLim = field;
         }
     } = 21;
 
-    public uint ForteLim {
+    public int ForteLim {
         get;
         set {
             if (SetProperty(ref field, Clamp(value, 2, 126)) && PianoLim > field) PianoLim = field;
         }
     } = 126;
 
-    public uint PianoLim {
+    public int PianoLim {
         get;
         set {
             if (SetProperty(ref field, Clamp(value, 2, 126)) && ForteLim < field) ForteLim = field;

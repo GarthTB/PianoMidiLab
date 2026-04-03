@@ -11,6 +11,26 @@
             <Setter Property="VerticalContentAlignment"
                 Value="Center"/>
         </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns"
+                Value="False"/>
+            <Setter Property="CanUserAddRows"
+                Value="False"/>
+            <Setter Property="CanUserDeleteRows"
+                Value="False"/>
+            <Setter Property="CanUserResizeColumns"
+                Value="False"/>
+            <Setter Property="CanUserResizeRows"
+                Value="False"/>
+            <Setter Property="SelectionMode"
+                Value="Single"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Padding"
+                Value="0"/>
+            <Setter Property="VerticalContentAlignment"
+                Value="Center"/>
+        </Style>
         <Style TargetType="TabItem">
             <Setter Property="Padding"
                 Value="12,4"/>
