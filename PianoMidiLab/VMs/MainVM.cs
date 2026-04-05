@@ -13,6 +13,7 @@ using static System.Windows.MessageBoxImage;
 internal sealed partial class MainVM: ObservableObject {
     public CleaningTabVM CleaningTabVM { get; } = new();
     public MapVelTabVM MapVelTabVM { get; } = new();
+    public PitchGainTabVM PitchGainTabVM { get; } = new();
 
     #region 文件
 
@@ -56,6 +57,7 @@ internal sealed partial class MainVM: ObservableObject {
                         Midi midi = new(path);
                         CleaningTabVM.Apply(midi);
                         MapVelTabVM.Apply(midi);
+                        PitchGainTabVM.Apply(midi);
                         midi.Save();
                     },
                     ct);

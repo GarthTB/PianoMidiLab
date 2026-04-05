@@ -17,7 +17,7 @@
                 Width="420">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Height="52"/>
+                    <RowDefinition Height="51"/>
                 </Grid.RowDefinitions>
                 <ListBox AllowDrop="True"
                     ToolTip="支持拖放"
@@ -56,6 +56,10 @@
         <TabItem Header="力度映射"
             IsEnabled="{Binding Idle}">
             <tabs:MapVelTab DataContext="{Binding MapVelTabVM}"/>
+        </TabItem>
+        <TabItem Header="力度均衡"
+            IsEnabled="{Binding Idle}">
+            <tabs:PitchGainTab DataContext="{Binding PitchGainTabVM}"/>
         </TabItem>
     </TabControl>
 </Window>
