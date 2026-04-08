@@ -10,24 +10,22 @@ internal sealed partial class PitchGainTabVM: ObservableObject {
     private static readonly bool[] HasAnchor = new bool[126];
     [ObservableProperty] public partial bool Enabled { get; set; }
 
-    public double Pitch0Gain {
+    public double Gain0 {
         get;
         set {
             if (SetProperty(ref field, Clamp(value, .05, 20)))
-                Pitch0VelOut = (int)Round(Pow((Pitch0VelIn - 1) / 126d, 1 / Pitch0Gain) * 126) + 1;
+                VelOut0 = (int)Round(Pow((PreviewVelIn - 1) / 126d, 1 / field) * 126) + 1;
         }
     } = 1;
 
-    public int Pitch0VelIn {
+    public double Gain127 {
         get;
         set {
-            if (SetProperty(ref field, Clamp(value, 1, 127)))
-                Pitch0VelOut = (int)Round(Pow((Pitch0VelIn - 1) / 126d, 1 / Pitch0Gain) * 126) + 1;
+            if (SetProperty(ref field, Clamp(value, .05, 20)))
+                VelOut127 = (int)Round(Pow((PreviewVelIn - 1) / 126d, 1 / field) * 126) + 1;
         }
-    } = 64;
+    } = 1;
 
-    [ObservableProperty] public partial int Pitch0VelOut { get; private set; } = 64;
-    public double Pitch127Gain { get; set => SetProperty(ref field, Clamp(value, .05, 20)); } = 1;
     public ObservableCollection<Anchor> Anchors { get; } = [];
     private bool CanAddAnchor => Anchors.Count < 126;
     private bool CanRemAnchor => SelAnchor is {};
@@ -38,7 +36,7 @@ internal sealed partial class PitchGainTabVM: ObservableObject {
     [RelayCommand(CanExecute = nameof(CanAddAnchor))]
     private void AddAnchor() {
         var i = HasAnchor.IndexOf(false);
-        Anchors.Add(new(i + 1));
+        Anchors.Add(new(i + 1, PreviewVelIn));
         HasAnchor[i] = true;
         AddAnchorCommand.NotifyCanExecuteChanged();
     }
@@ -52,14 +50,14 @@ internal sealed partial class PitchGainTabVM: ObservableObject {
 
     public void Apply(Midi midi) {
         if (!Enabled
-         || (Abs(Pitch0Gain - 1) < .01
-          && Abs(Pitch127Gain - 1) < .01
+         || (Abs(Gain0 - 1) < .01
+          && Abs(Gain127 - 1) < .01
           && Anchors.All(static a => Abs(a.Gain - 1) < .01)))
             return;
 
         var anchors = Anchors.Select(static a => (a.Pitch, a.Gain))
-            .Append(new(0, Pitch0Gain))
-            .Append(new(127, Pitch127Gain))
+            .Append(new(0, Gain0))
+            .Append(new(127, Gain127))
             .OrderBy(static a => a.Pitch)
             .ToArray();
         var map = new byte[128, 127];
@@ -73,7 +71,16 @@ internal sealed partial class PitchGainTabVM: ObservableObject {
         midi.MapNoteOnVel((v, p) => map[p, v - 1]);
     }
 
-    public sealed class Anchor(int pitch): ObservableObject {
+    public sealed partial class Anchor(int pitch, int velIn): ObservableObject {
+        public int VelIn {
+            private get;
+            set {
+                if (field == value) return;
+                field = value;
+                VelOut = (int)Round(Pow((field - 1) / 126d, 1 / Gain) * 126) + 1;
+            }
+        } = velIn;
+
         public int Pitch {
             get;
             set {
@@ -88,6 +95,31 @@ internal sealed partial class PitchGainTabVM: ObservableObject {
             }
         } = pitch;
 
-        public double Gain { get; set => SetProperty(ref field, Clamp(value, .05, 20)); } = 1;
+        public double Gain {
+            get;
+            set {
+                if (SetProperty(ref field, Clamp(value, .05, 20)))
+                    VelOut = (int)Round(Pow((VelIn - 1) / 126d, 1 / field) * 126) + 1;
+            }
+        } = 1;
+
+        [ObservableProperty] public partial int VelOut { get; private set; } = velIn;
     }
+
+    #region 预览力度
+
+    public int PreviewVelIn {
+        get;
+        set {
+            if (!SetProperty(ref field, Clamp(value, 1, 127))) return;
+            VelOut0 = (int)Round(Pow((field - 1) / 126d, 1 / Gain0) * 126) + 1;
+            VelOut127 = (int)Round(Pow((field - 1) / 126d, 1 / Gain127) * 126) + 1;
+            foreach (var a in Anchors) a.VelIn = field;
+        }
+    } = 64;
+
+    [ObservableProperty] public partial int VelOut0 { get; private set; } = 64;
+    [ObservableProperty] public partial int VelOut127 { get; private set; } = 64;
+
+    #endregion 预览力度
 }

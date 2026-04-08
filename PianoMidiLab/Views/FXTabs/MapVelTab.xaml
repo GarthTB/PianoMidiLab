@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition/>
@@ -44,10 +44,10 @@
             <Label Content="力度 1 和 127 映射到"/>
             <TextBox Grid.Column="1"
                 ToolTip="输入力度1的输出力度"
-                Text="{Binding Vel1To, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding Vel1To}"/>
             <TextBox Grid.Column="3"
                 ToolTip="输入力度127的输出力度"
-                Text="{Binding Vel127To, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding Vel127To}"/>
         </Grid>
         <DataGrid Grid.Row="4"
             ToolTip="线性插值"
@@ -56,10 +56,10 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*"
                     Header="输入力度"
-                    Binding="{Binding VelIn, UpdateSourceTrigger=PropertyChanged}"/>
+                    Binding="{Binding VelIn}"/>
                 <DataGridTextColumn Width="*"
                     Header="输出力度"
-                    Binding="{Binding VelOut, UpdateSourceTrigger=PropertyChanged}"/>
+                    Binding="{Binding VelOut}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

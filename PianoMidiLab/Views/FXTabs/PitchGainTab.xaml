@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition/>
@@ -38,40 +38,43 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="144"/>
+                <ColumnDefinition Width="66"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Label Content="音高 0 和 127 的增益"/>
-            <TextBox Grid.Column="1"
-                ToolTip="音高0的力度增益（Gamma的倒数）"
-                Text="{Binding Pitch0Gain, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.ColumnSpan="3"
+                Content="音高 0 和 127 的增益"/>
             <TextBox Grid.Column="3"
+                ToolTip="音高0的力度增益（Gamma的倒数）"
+                Text="{Binding Gain0, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Column="5"
                 ToolTip="音高127的力度增益（Gamma的倒数）"
-                Text="{Binding Pitch127Gain, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding Gain127, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="106"/>
-                <ColumnDefinition Width="38"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="38"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Label Content="音高 0 力度预览"/>
-            <Label Grid.Column="1"
-                Content="输入"/>
-            <TextBox Grid.Column="2"
-                ToolTip="预览输入力度"
-                Text="{Binding Pitch0VelIn, UpdateSourceTrigger=PropertyChanged}"/>
-            <Label Grid.Column="4"
-                Content="输出"/>
-            <TextBox Grid.Column="5"
+            <Label Content="预览输入"/>
+            <TextBox Grid.Column="1"
+                ToolTip="用于预览效果的输入力度"
+                Text="{Binding PreviewVelIn, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Column="3"
+                ToolTip="音高0的增益对应的输出力度"
                 IsReadOnly="True"
-                ToolTip="预览输出力度"
-                Text="{Binding Pitch0VelOut, Mode=OneWay}"/>
+                Text="{Binding VelOut0, Mode=OneWay}"/>
+            <TextBox Grid.Column="5"
+                ToolTip="音高127的增益对应的输出力度"
+                IsReadOnly="True"
+                Text="{Binding VelOut127, Mode=OneWay}"/>
         </Grid>
         <DataGrid Grid.Row="6"
             ToolTip="增益为Gamma的倒数；线性插值"
@@ -80,10 +83,14 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*"
                     Header="音高"
-                    Binding="{Binding Pitch, UpdateSourceTrigger=PropertyChanged}"/>
+                    Binding="{Binding Pitch}"/>
                 <DataGridTextColumn Width="*"
                     Header="力度增益"
                     Binding="{Binding Gain, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Width="*"
+                    Header="预览输出"
+                    IsReadOnly="True"
+                    Binding="{Binding VelOut, Mode=OneWay}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

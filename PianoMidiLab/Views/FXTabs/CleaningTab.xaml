@@ -9,7 +9,7 @@
     FontSize="14"
     UseLayoutRounding="True">
     <Grid Margin="12,11"
-        Width="240">
+        Width="256">
         <Grid.RowDefinitions>
             <RowDefinition Height="29"/>
             <RowDefinition Height="11"/>
@@ -19,78 +19,69 @@
             <RowDefinition Height="11"/>
             <RowDefinition Height="29"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid ToolTip="不含此值；单位：Tick">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <CheckBox Padding="8,0"
                 Content="长于"
                 IsChecked="{Binding RemLong}"/>
             <TextBox Grid.Column="1"
-                ToolTip="不含此值；单位：Tick"
-                IsEnabled="{Binding RemLong}"
                 Text="{Binding LongLim, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2"
+            ToolTip="不含此值；单位：Tick">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <CheckBox Padding="8,0"
                 Content="短于"
                 IsChecked="{Binding RemShort}"/>
             <TextBox Grid.Column="1"
-                ToolTip="不含此值；单位：Tick"
-                IsEnabled="{Binding RemShort}"
                 Text="{Binding ShortLim, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="4"
+            ToolTip="不含此值">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <CheckBox Padding="8,0"
                 Content="高于"
                 IsChecked="{Binding RemHigh}"/>
             <TextBox Grid.Column="1"
-                ToolTip="不含此值"
-                IsEnabled="{Binding RemHigh}"
                 Text="{Binding HighLim, UpdateSourceTrigger=PropertyChanged}"/>
             <CheckBox Grid.Column="3"
                 Padding="8,0"
                 Content="低于"
                 IsChecked="{Binding RemLow}"/>
             <TextBox Grid.Column="4"
-                ToolTip="不含此值"
-                IsEnabled="{Binding RemLow}"
                 Text="{Binding LowLim, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
-        <Grid Grid.Row="6">
+        <Grid Grid.Row="6"
+            ToolTip="触发力度；不含此值">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="12"/>
-                <ColumnDefinition Width="64"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <CheckBox Padding="8,0"
                 Content="强于"
                 IsChecked="{Binding RemForte}"/>
             <TextBox Grid.Column="1"
-                ToolTip="触发力度；不含此值"
-                IsEnabled="{Binding RemForte}"
                 Text="{Binding ForteLim, UpdateSourceTrigger=PropertyChanged}"/>
             <CheckBox Grid.Column="3"
                 Padding="8,0"
                 Content="弱于"
                 IsChecked="{Binding RemPiano}"/>
             <TextBox Grid.Column="4"
-                ToolTip="触发力度；不含此值"
-                IsEnabled="{Binding RemPiano}"
                 Text="{Binding PianoLim, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
     </Grid>
