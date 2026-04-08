@@ -7,7 +7,7 @@
 ![Tech Stack](https://skillicons.dev/icons?i=dotnet,cs,windows)
 
 [![License MIT](https://img.shields.io/badge/License-MIT-750014)](https://mit-license.org)
-[![Latest 1.0.0](https://img.shields.io/badge/Latest-1.0.0-0FBF3E?logo=github)](https://github.com/GarthTB/PianoMidiLab/releases/latest)
+[![Latest 1.1.0](https://img.shields.io/badge/Latest-1.1.0-0FBF3E?logo=github)](https://github.com/GarthTB/PianoMidiLab/releases/latest)
 
 ## ✨ 特点
 
@@ -18,9 +18,9 @@
 ## ⚙ 功能
 
 1. **清除音符**：删除长于/短于/高于/低于/强于/弱于特定阈值的所有音符
-2. **力度映射**：利用两个固定锚点（输入力度 1 和 127）与 0–125 个附加锚点，线性插值，对 `NoteOn` 执行 `[输入力度, 输出力度]`
+2. **力度映射**：利用两个固定锚点（输入力度 1 和 127）与 0–125 个额外锚点，线性插值，对 `NoteOn` 执行 `[输入力度, 输出力度]`
    映射。
-3. **力度均衡**：利用两个固定锚点（音高 0 和 127）与 0–126 个附加锚点，线性插值，对 `NoteOn` 施加 `[音高, 力度增益]`。
+3. **力度均衡**：利用两个固定锚点（音高 0 和 127）与 0–126 个额外锚点，线性插值，对 `NoteOn` 施加 `[音高, 力度增益]`。
     - 增益定义为 gamma 的倒数：`out = Pow((in - 1) / 126, 1 / gain) * 126 + 1`
 
 ## 📥 用法
@@ -45,6 +45,10 @@
 - 声明：本项目基于作者自用需求，追求极简高效而不承诺完备
 
 ## 📝 版本
+
+### v1.1.0 (20260409)
+
+优化力度均衡效果的力度预览
 
 ### v1.0.0 (20260405)
 
